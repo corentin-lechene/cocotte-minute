@@ -1,4 +1,12 @@
-import {BadRequestException, Body, Controller, Get, Post} from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Get,
+    Post,
+    UsePipes,
+    ValidationPipe
+} from '@nestjs/common';
 import {FindRecipesUseCase} from "../../../use-cases/recipes/find-recipes/find-recipes.use-case";
 import {CreateRecipeUseCase} from "../../../use-cases/recipes/create-recipe/create-recipe.use-case";
 import {CreateRecipeRequest} from "./dto/create-recipe-request.dto";
@@ -22,18 +30,16 @@ export class RecipeController {
     }
 
     @Post()
+    @UsePipes(new ValidationPipe({ transform: true }))
     async createRecipe(@Body() requestDto: CreateRecipeRequest): Promise<CreateRecipeResponse> {
         try {
             const data: CreateRecipeInput = {
-                name: requestDto?.name,
-                picture: requestDto?.picture,
+                name: requestDto.name,
+                picture: requestDto.picture,
             }
             return await this.createRecipeUseCase.execute(data);
         } catch (error) {
             console.error(error)
-            if(error instanceof UseCaseError) {
-                throw HTTPExceptionMapper.toHttpException(error);
-            }
             throw new BadRequestException(error);
         }
     }
