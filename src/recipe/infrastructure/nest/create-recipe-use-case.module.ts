@@ -1,7 +1,7 @@
 import {DynamicModule, Module, Type} from "@nestjs/common";
 import {CreateRecipeUseCase} from "../../use-cases/create-recipe/create-recipe.use-case";
-import {CreateRecipeRepository} from "../../use-cases/create-recipe/repository/create-recipe.repository";
 import {RecipeFactory} from "../../domain/factories/recipe.factory";
+import {RecipeWriteRepository} from "../../domain/repository/recipe-write.repository";
 
 @Module({})
 export class CreateRecipeUseCaseModule {
@@ -13,10 +13,10 @@ export class CreateRecipeUseCaseModule {
                 RecipeFactory,
                 {
                     provide: CreateRecipeUseCase,
-                    useFactory: (repository: CreateRecipeRepository, factory: RecipeFactory) => {
+                    useFactory: (repository: RecipeWriteRepository, factory: RecipeFactory) => {
                         return new CreateRecipeUseCase(repository, factory);
                     },
-                    inject: [CreateRecipeRepository, RecipeFactory],
+                    inject: [RecipeWriteRepository, RecipeFactory],
                 },
             ],
             exports: [CreateRecipeUseCase],

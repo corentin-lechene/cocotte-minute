@@ -1,6 +1,6 @@
 import {DynamicModule, Module, Type} from '@nestjs/common';
-import {FindRecipesRepository} from "../../use-cases/find-recipes/repository/find-recipes.repository";
 import {FindRecipesUseCase} from "../../use-cases/find-recipes/find-recipes.use-case";
+import {RecipeReadRepository} from "../../domain/repository/recipe-read.repository";
 
 @Module({})
 export class FindRecipesUseCaseModule {
@@ -11,10 +11,10 @@ export class FindRecipesUseCaseModule {
             providers: [
                 {
                     provide: FindRecipesUseCase,
-                    useFactory: (repository: FindRecipesRepository) => {
+                    useFactory: (repository: RecipeReadRepository) => {
                         return new FindRecipesUseCase(repository);
                     },
-                    inject: [FindRecipesRepository],
+                    inject: [RecipeReadRepository],
                 },
             ],
             exports: [FindRecipesUseCase],

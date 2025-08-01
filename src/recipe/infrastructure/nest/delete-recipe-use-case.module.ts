@@ -1,9 +1,7 @@
 import {DynamicModule, Module, Type} from '@nestjs/common';
 import {DeleteRecipeUseCase} from "../../use-cases/delete-recipe/delete-recipe.use-case";
-import {
-    FindRecipeByIdRepository
-} from "../../use-cases/delete-recipe/repository/find-recipe-by-id.repository";
-import {DeleteRecipeRepository} from "../../use-cases/delete-recipe/repository/delete-recipe.repository";
+import {RecipeReadRepository} from "../../domain/repository/recipe-read.repository";
+import {RecipeWriteRepository} from "../../domain/repository/recipe-write.repository";
 
 @Module({})
 export class DeleteRecipeUseCaseModule {
@@ -14,13 +12,13 @@ export class DeleteRecipeUseCaseModule {
             providers: [
                 {
                     provide: DeleteRecipeUseCase,
-                    useFactory: (findRecipeById: FindRecipeByIdRepository, deleteRecipe: DeleteRecipeRepository) => {
+                    useFactory: (findRecipeById: RecipeReadRepository, deleteRecipe: RecipeWriteRepository) => {
                         return new DeleteRecipeUseCase(
                             findRecipeById,
                             deleteRecipe,
                         );
                     },
-                    inject: [FindRecipeByIdRepository, DeleteRecipeRepository],
+                    inject: [RecipeReadRepository, RecipeWriteRepository],
                 },
             ],
             exports: [DeleteRecipeUseCase],
