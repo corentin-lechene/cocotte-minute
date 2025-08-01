@@ -1,8 +1,8 @@
 import {
     BadRequestException,
     Body,
-    Controller,
-    Get,
+    Controller, Delete,
+    Get, Param,
     Post,
     UsePipes,
     ValidationPipe
@@ -12,12 +12,15 @@ import {CreateRecipeUseCase} from "../../../use-cases/recipes/create-recipe/crea
 import {CreateRecipeRequest} from "./dto/create-recipe-request.dto";
 import {CreateRecipeResponse} from "./dto/create-recipe-response.dto";
 import {CreateRecipeInput} from "../../../use-cases/recipes/create-recipe/ports/create-recipe-dto.input";
+import {DeleteRecipeUseCase} from "../../../use-cases/recipes/delete-recipe/delete-recipe.use-case";
+import {RecipeId} from "../../../domain/recipe/value-objects/recipe-id.vo";
 
 @Controller('recipes')
 export class RecipeController {
     constructor(
         private readonly findRecipeUseCase: FindRecipesUseCase,
         private readonly createRecipeUseCase: CreateRecipeUseCase,
+        private readonly deleteRecipeUseCase: DeleteRecipeUseCase,
     ) {}
 
     @Get()
@@ -38,6 +41,16 @@ export class RecipeController {
                 picture: requestDto.picture,
             }
             return await this.createRecipeUseCase.execute(data);
+        } catch (error) {
+            console.error(error)
+            throw new BadRequestException(error);
+        }
+    }
+
+    @Delete(':recipeId')
+    async deleteRecipe(@Param('recipeId') recipeId: string) {
+        try {
+            return await this.deleteRecipeUseCase.execute({ recipeId: RecipeId.from(recipeId) });
         } catch (error) {
             console.error(error)
             throw new BadRequestException(error);

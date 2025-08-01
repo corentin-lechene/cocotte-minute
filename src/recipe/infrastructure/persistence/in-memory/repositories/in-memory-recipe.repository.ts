@@ -4,9 +4,17 @@ import {Recipe} from "../../../../domain/recipe/recipe.model";
 import {RecipeId} from "../../../../domain/recipe/value-objects/recipe-id.vo";
 import {Injectable} from "@nestjs/common";
 import {RecipeMapper} from "../mappers/recipe.mapper";
+import {CreateRecipeRepository} from "../../../../use-cases/recipes/create-recipe/repository/create-recipe.repository";
+import {DeleteRecipeRepository} from "../../../../use-cases/recipes/delete-recipe/repository/delete-recipe.repository";
+import {
+    FindRecipeByIdRepository
+} from "../../../../use-cases/recipes/delete-recipe/repository/find-recipe-by-id.repository";
+import {RecipeNotFoundError} from "../../../../domain/recipe/recipe.error";
 
 @Injectable()
-export class InMemoryRecipeRepository implements FindRecipesRepository {
+export class InMemoryRecipeRepository
+    implements FindRecipesRepository, CreateRecipeRepository, DeleteRecipeRepository, FindRecipeByIdRepository {
+
     private readonly recipes: RecipeEntity[] = [
         new RecipeEntity('1', 'Recette 1', "https://image.fr/1"),
         new RecipeEntity('2', 'Recette 2', "https://image.fr/2"),
@@ -21,6 +29,17 @@ export class InMemoryRecipeRepository implements FindRecipesRepository {
         });
     }
 
+    findById(recipeId: RecipeId): Promise<Recipe> {
+        return new Promise((resolve, reject) => {
+            const recipeEntity = this.recipes.find(recipe => recipe.id === recipeId.getValue());
+            if (recipeEntity) {
+                resolve(RecipeMapper.toDomain(recipeEntity));
+            } else {
+                reject(new RecipeNotFoundError(recipeId.getValue()));
+            }
+        });
+    }
+
     create(recipe: Recipe): Promise<Recipe> {
         return new Promise((resolve) => {
             const persistenceModel = RecipeMapper.toPersistence(recipe);
@@ -28,6 +47,16 @@ export class InMemoryRecipeRepository implements FindRecipesRepository {
             const recipeEntity = new RecipeEntity(persistenceModel.id, persistenceModel.name, persistenceModel.picture);
             this.recipes.push(recipeEntity);
             resolve(RecipeMapper.toDomain(recipeEntity));
+        });
+    }
+
+    archive(recipeId: RecipeId): Promise<Recipe[]> {
+        return new Promise((resolve) => {
+            const recipeIndex = this.recipes.findIndex(recipe => recipe.id === recipeId.getValue());
+            if (recipeIndex !== -1) {
+                this.recipes.splice(recipeIndex, 1);
+            }
+            resolve(this.recipes.map(recipeEntity => RecipeMapper.toDomain(recipeEntity)));
         });
     }
 }
