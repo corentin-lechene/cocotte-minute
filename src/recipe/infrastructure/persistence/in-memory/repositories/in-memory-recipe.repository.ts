@@ -4,7 +4,7 @@ import {Recipe} from "../../../../domain/recipe/recipe.model";
 import {RecipeId} from "../../../../domain/recipe/value-objects/recipe-id.vo";
 import {Injectable} from "@nestjs/common";
 import {RecipeMapper} from "../mappers/recipe.mapper";
-import {CreateRecipeRepository} from "../../../../use-cases/recipes/create-recipe/repository/create-recipe.repository";
+import {CreateRecipeRepository} from "../../../../use-cases/create-recipe/repository/create-recipe.repository";
 import {DeleteRecipeRepository} from "../../../../use-cases/recipes/delete-recipe/repository/delete-recipe.repository";
 import {
     FindRecipeByIdRepository

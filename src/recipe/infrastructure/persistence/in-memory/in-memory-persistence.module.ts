@@ -1,7 +1,7 @@
 import {Module} from "@nestjs/common";
 import {InMemoryRecipeRepository} from "./repositories/in-memory-recipe.repository";
 import {FindRecipesRepository} from "../../../use-cases/find-recipes/repository/find-recipes.repository";
-import {CreateRecipeRepository} from "../../../use-cases/recipes/create-recipe/repository/create-recipe.repository";
+import {CreateRecipeRepository} from "../../../use-cases/create-recipe/repository/create-recipe.repository";
 import {DeleteRecipeRepository} from "../../../use-cases/recipes/delete-recipe/repository/delete-recipe.repository";
 import {
     FindRecipeByIdRepository

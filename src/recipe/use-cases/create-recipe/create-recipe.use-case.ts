@@ -1,6 +1,6 @@
 import {CreateRecipeUseCaseInterface} from "./ports/create-recipe-use-case.interface";
 import {CreateRecipeRepository} from "./repository/create-recipe.repository";
-import {RecipeFactory} from "../../../domain/recipe/factories/recipe.factory";
+import {RecipeFactory} from "../../domain/recipe/factories/recipe.factory";
 import {CreateRecipeInput} from "./ports/create-recipe-dto.input";
 import {CreateRecipeOutput} from "./ports/create-recipe-dto.output";
 
