@@ -7,7 +7,7 @@ import {
     UsePipes,
     ValidationPipe
 } from '@nestjs/common';
-import {FindRecipesUseCase} from "../../../use-cases/recipes/find-recipes/find-recipes.use-case";
+import {FindRecipesUseCase} from "../../../use-cases/find-recipes/find-recipes.use-case";
 import {CreateRecipeUseCase} from "../../../use-cases/recipes/create-recipe/create-recipe.use-case";
 import {CreateRecipeRequest} from "./dto/create-recipe-request.dto";
 import {CreateRecipeResponse} from "./dto/create-recipe-response.dto";

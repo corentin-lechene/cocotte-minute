@@ -1,8 +1,8 @@
 import {IFindRecipesUseCase} from "./ports/find-recipes-use-case.interface";
 import {FindRecipesRepository} from "./repository/find-recipes.repository";
 import {Injectable} from "@nestjs/common";
-import {RecipeNotFoundError} from "../../../domain/recipe/recipe.error";
-import {UseCaseError} from "../../use-case.error";
+import {RecipeNotFoundError} from "../../domain/recipe/recipe.error";
+import {UseCaseError} from "../use-case.error";
 import {FindRecipesOutput} from "./ports/find-recipes-dto.output";
 import {FindRecipesInput} from "./ports/find-recipes-dto.input";
 

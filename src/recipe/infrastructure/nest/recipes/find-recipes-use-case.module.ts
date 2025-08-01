@@ -1,6 +1,6 @@
 import {DynamicModule, Module, Type} from '@nestjs/common';
-import {FindRecipesRepository} from "../../../use-cases/recipes/find-recipes/repository/find-recipes.repository";
-import {FindRecipesUseCase} from "../../../use-cases/recipes/find-recipes/find-recipes.use-case";
+import {FindRecipesRepository} from "../../../use-cases/find-recipes/repository/find-recipes.repository";
+import {FindRecipesUseCase} from "../../../use-cases/find-recipes/find-recipes.use-case";
 
 @Module({})
 export class FindRecipesUseCaseModule {

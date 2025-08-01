@@ -1,4 +1,4 @@
-import {FindRecipesRepository} from "../../../../use-cases/recipes/find-recipes/repository/find-recipes.repository";
+import {FindRecipesRepository} from "../../../../use-cases/find-recipes/repository/find-recipes.repository";
 import {RecipeEntity} from "../entities/recipe.entity";
 import {Recipe} from "../../../../domain/recipe/recipe.model";
 import {RecipeId} from "../../../../domain/recipe/value-objects/recipe-id.vo";
