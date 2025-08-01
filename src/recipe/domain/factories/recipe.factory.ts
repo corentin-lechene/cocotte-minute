@@ -1,5 +1,5 @@
 import {RecipeId} from "../value-objects/recipe-id.vo";
-import {Recipe} from "../recipe.model";
+import {Recipe} from "../models/recipe.model";
 
 export class RecipeFactory {
     create(name: string, picture: string): Recipe {

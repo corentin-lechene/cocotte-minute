@@ -1,8 +1,8 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
-import { RecipeController } from '../../presenters/http/recipes/recipe.controller';
-import { FindRecipesUseCaseModule } from "./recipes/find-recipes-use-case.module";
-import { CreateRecipeUseCaseModule } from "./recipes/create-recipe-use-case.module";
-import {DeleteRecipeUseCaseModule} from "./recipes/delete-recipe-use-case.module";
+import { RecipeController } from '../../presenters/http/recipe.controller';
+import { FindRecipesUseCaseModule } from "./find-recipes-use-case.module";
+import { CreateRecipeUseCaseModule } from "./create-recipe-use-case.module";
+import {DeleteRecipeUseCaseModule} from "./delete-recipe-use-case.module";
 
 @Module({})
 export class RecipeModule {

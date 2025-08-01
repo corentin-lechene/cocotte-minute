@@ -7,13 +7,13 @@ import {
     UsePipes,
     ValidationPipe
 } from '@nestjs/common';
-import {FindRecipesUseCase} from "../../../use-cases/find-recipes/find-recipes.use-case";
-import {CreateRecipeUseCase} from "../../../use-cases/create-recipe/create-recipe.use-case";
+import {FindRecipesUseCase} from "../../use-cases/find-recipes/find-recipes.use-case";
+import {CreateRecipeUseCase} from "../../use-cases/create-recipe/create-recipe.use-case";
 import {CreateRecipeRequest} from "./dto/create-recipe-request.dto";
 import {CreateRecipeResponse} from "./dto/create-recipe-response.dto";
-import {CreateRecipeInput} from "../../../use-cases/create-recipe/ports/create-recipe-dto.input";
-import {DeleteRecipeUseCase} from "../../../use-cases/delete-recipe/delete-recipe.use-case";
-import {RecipeId} from "../../../domain/recipe/value-objects/recipe-id.vo";
+import {CreateRecipeInput} from "../../use-cases/create-recipe/ports/create-recipe-dto.input";
+import {DeleteRecipeUseCase} from "../../use-cases/delete-recipe/delete-recipe.use-case";
+import {RecipeId} from "../../domain/value-objects/recipe-id.vo";
 
 @Controller('recipes')
 export class RecipeController {

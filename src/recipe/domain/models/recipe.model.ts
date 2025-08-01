@@ -1,5 +1,5 @@
-import {RecipeId} from "./value-objects/recipe-id.vo";
-import {RecipeDuration} from "./value-objects/recipe-duration.vo";
+import {RecipeId} from "../value-objects/recipe-id.vo";
+import {RecipeDuration} from "../value-objects/recipe-duration.vo";
 
 export class Recipe {
     id: RecipeId;

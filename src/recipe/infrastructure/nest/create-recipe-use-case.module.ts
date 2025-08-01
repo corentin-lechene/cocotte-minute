@@ -1,7 +1,7 @@
 import {DynamicModule, Module, Type} from "@nestjs/common";
-import {CreateRecipeUseCase} from "../../../use-cases/create-recipe/create-recipe.use-case";
-import {CreateRecipeRepository} from "../../../use-cases/create-recipe/repository/create-recipe.repository";
-import {RecipeFactory} from "../../../domain/recipe/factories/recipe.factory";
+import {CreateRecipeUseCase} from "../../use-cases/create-recipe/create-recipe.use-case";
+import {CreateRecipeRepository} from "../../use-cases/create-recipe/repository/create-recipe.repository";
+import {RecipeFactory} from "../../domain/factories/recipe.factory";
 
 @Module({})
 export class CreateRecipeUseCaseModule {

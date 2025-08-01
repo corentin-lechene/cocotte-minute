@@ -1,7 +1,7 @@
 import {FindRecipesRepository} from "../../../../use-cases/find-recipes/repository/find-recipes.repository";
 import {RecipeEntity} from "../entities/recipe.entity";
-import {Recipe} from "../../../../domain/recipe/recipe.model";
-import {RecipeId} from "../../../../domain/recipe/value-objects/recipe-id.vo";
+import {Recipe} from "../../../../domain/models/recipe.model";
+import {RecipeId} from "../../../../domain/value-objects/recipe-id.vo";
 import {Injectable} from "@nestjs/common";
 import {RecipeMapper} from "../mappers/recipe.mapper";
 import {CreateRecipeRepository} from "../../../../use-cases/create-recipe/repository/create-recipe.repository";
@@ -9,7 +9,7 @@ import {DeleteRecipeRepository} from "../../../../use-cases/delete-recipe/reposi
 import {
     FindRecipeByIdRepository
 } from "../../../../use-cases/delete-recipe/repository/find-recipe-by-id.repository";
-import {RecipeNotFoundError} from "../../../../domain/recipe/recipe.error";
+import {RecipeNotFoundError} from "../../../../domain/errors/recipe.error";
 
 @Injectable()
 export class InMemoryRecipeRepository

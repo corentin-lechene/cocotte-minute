@@ -1,6 +1,6 @@
-import {Recipe} from "../../../../domain/recipe/recipe.model";
+import {Recipe} from "../../../../domain/models/recipe.model";
 import {RecipeEntity} from "../entities/recipe.entity";
-import {RecipeId} from "../../../../domain/recipe/value-objects/recipe-id.vo";
+import {RecipeId} from "../../../../domain/value-objects/recipe-id.vo";
 
 export class RecipeMapper {
     static toDomain(entity: RecipeEntity): Recipe {
