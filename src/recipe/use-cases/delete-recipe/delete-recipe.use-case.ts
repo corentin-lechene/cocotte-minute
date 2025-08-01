@@ -3,7 +3,7 @@ import { DeleteRecipeRepository } from "./repository/delete-recipe.repository";
 import { FindRecipeByIdRepository } from "./repository/find-recipe-by-id.repository";
 import { DeleteRecipeOutput } from "./ports/delete-recipe-dto.output";
 import { DeleteRecipeInput } from "./ports/delete-recipe-dto.input";
-import { UseCaseError } from "../../use-case.error";
+import { UseCaseError } from "../use-case.error";
 
 export class DeleteRecipeUseCase implements IDeleteRecipeUseCase {
   constructor(

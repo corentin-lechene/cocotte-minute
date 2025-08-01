@@ -12,7 +12,7 @@ import {CreateRecipeUseCase} from "../../../use-cases/create-recipe/create-recip
 import {CreateRecipeRequest} from "./dto/create-recipe-request.dto";
 import {CreateRecipeResponse} from "./dto/create-recipe-response.dto";
 import {CreateRecipeInput} from "../../../use-cases/create-recipe/ports/create-recipe-dto.input";
-import {DeleteRecipeUseCase} from "../../../use-cases/recipes/delete-recipe/delete-recipe.use-case";
+import {DeleteRecipeUseCase} from "../../../use-cases/delete-recipe/delete-recipe.use-case";
 import {RecipeId} from "../../../domain/recipe/value-objects/recipe-id.vo";
 
 @Controller('recipes')
