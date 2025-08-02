@@ -6,6 +6,8 @@ import {Recipe} from "../../../../domain/models/recipe.model";
 import {RecipeId} from "../../../../domain/value-objects/recipe-id.vo";
 import {RecipeMapper} from "../mappers/recipe.mapper";
 import {RecipeNotFoundError} from "../../../../domain/errors/recipe.error";
+import {IngredientMapper} from "../mappers/ingredient.mapper";
+import {Ingredient} from "../../../../domain/models/ingredient.model";
 
 @Injectable()
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
@@ -29,6 +31,17 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
             const recipeEntity = this.recipes.find(recipe => recipe.id === recipeId.getValue());
             if (recipeEntity) {
                 resolve(RecipeMapper.toDomain(recipeEntity));
+            } else {
+                reject(new RecipeNotFoundError(recipeId.getValue()));
+            }
+        });
+    }
+
+    findIngredientsByRecipeId(recipeId: RecipeId): Promise<Ingredient[]> {
+        return new Promise((resolve, reject) => {
+            const recipeEntity = this.recipes.find(recipe => recipe.id === recipeId.getValue());
+            if (recipeEntity) {
+                resolve(recipeEntity.ingredients.map((ingredient) => IngredientMapper.toDomain(ingredient)));
             } else {
                 reject(new RecipeNotFoundError(recipeId.getValue()));
             }

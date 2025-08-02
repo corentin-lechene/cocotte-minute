@@ -20,6 +20,9 @@ import {AddIngredientRequest} from "./dto/add-ingredient-request.dto";
 import {IngredientUnitType} from "../../domain/value-objects/ingredient-unit-type.vo";
 import {IngredientUnit} from "../../domain/value-objects/ingredient-unit.vo";
 import {AddIngredientUseCase} from "../../use-cases/add-ingredient/add-ingredient.use-case";
+import {
+    FindIngredientsByRecipeIdUseCase
+} from "../../use-cases/find-all-ingredients-by-id/find-ingredients-by-recipe-id-use.case";
 
 @Controller('recipes')
 export class RecipeController {
@@ -28,6 +31,7 @@ export class RecipeController {
         private readonly createRecipeUseCase: CreateRecipeUseCase,
         private readonly deleteRecipeUseCase: DeleteRecipeUseCase,
         private readonly addIngredientUseCase: AddIngredientUseCase,
+        private readonly findIngredientsByRecipeIdUseCase: FindIngredientsByRecipeIdUseCase,
     ) {}
 
     @Get()
@@ -35,6 +39,16 @@ export class RecipeController {
         try {
             return await this.findRecipeUseCase.execute({});
         } catch (error) {
+            throw new BadRequestException(error);
+        }
+    }
+
+    @Get(':recipeId/ingredients')
+    async findIngredientsByRecipeId(@Param('recipeId') recipeId: string) {
+        try {
+            return await this.findIngredientsByRecipeIdUseCase.execute({ recipeId: RecipeId.from(recipeId) });
+        } catch (error) {
+            console.error(error);
             throw new BadRequestException(error);
         }
     }
