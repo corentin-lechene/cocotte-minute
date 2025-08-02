@@ -3,6 +3,6 @@ import { RecipeId } from "../value-objects/recipe-id.vo";
 
 export abstract class RecipeWriteRepository {
     abstract create(recipe: Recipe): Promise<Recipe>;
+    abstract save(recipe: Recipe): Promise<Recipe>;
     abstract archive(recipeId: RecipeId): Promise<Recipe[]>;
 }
-

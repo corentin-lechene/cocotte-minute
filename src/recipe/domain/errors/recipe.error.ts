@@ -11,3 +11,9 @@ export class RecipeNotFoundError extends RecipeError {
         super(`Recipe with id ${id ?? '<unknown>'} not found`, 'NOT_FOUND');
     }
 }
+
+export class RecipeIngredientNotFoundError extends RecipeError {
+    constructor(id?: string | unknown) {
+        super(`Recipe ingredient with id ${id ?? '<unknown>'} not found`, 'INGREDIENT_NOT_FOUND');
+    }
+}

@@ -1,37 +1,23 @@
 import {Module} from "@nestjs/common";
 import {InMemoryRecipeRepository} from "./repositories/in-memory-recipe.repository";
-import {FindRecipesRepository} from "../../../use-cases/find-recipes/repository/find-recipes.repository";
-import {CreateRecipeRepository} from "../../../use-cases/create-recipe/repository/create-recipe.repository";
-import {DeleteRecipeRepository} from "../../../use-cases/delete-recipe/repository/delete-recipe.repository";
-import {
-    FindRecipeByIdRepository
-} from "../../../use-cases/delete-recipe/repository/find-recipe-by-id.repository";
+import {RecipeWriteRepository} from "../../../domain/repository/recipe-write.repository";
+import {RecipeReadRepository} from "../../../domain/repository/recipe-read.repository";
 
 @Module({
     providers: [
         InMemoryRecipeRepository,
         {
-            provide: FindRecipesRepository,
+            provide: RecipeWriteRepository,
             useExisting: InMemoryRecipeRepository,
         },
         {
-            provide: CreateRecipeRepository,
-            useExisting: InMemoryRecipeRepository,
-        },
-        {
-            provide: DeleteRecipeRepository,
-            useExisting: InMemoryRecipeRepository,
-        },
-        {
-            provide: FindRecipeByIdRepository,
+            provide: RecipeReadRepository,
             useExisting: InMemoryRecipeRepository,
         },
     ],
     exports: [
-        FindRecipesRepository,
-        CreateRecipeRepository,
-        DeleteRecipeRepository,
-        FindRecipeByIdRepository,
+        RecipeWriteRepository,
+        RecipeReadRepository,
     ],
 })
 export class InMemoryPersistenceModule {}

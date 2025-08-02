@@ -13,7 +13,7 @@ export class RecipeId {
     }
 
     public static generate(): RecipeId {
-        return new RecipeId("fake-id");
+        return new RecipeId(Date.now().toString());
     }
 
     static from(value: string): RecipeId {
