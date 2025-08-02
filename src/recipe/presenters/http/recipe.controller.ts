@@ -27,6 +27,7 @@ import {IngredientId} from "../../domain/value-objects/ingredient-id.vo";
 import {
     DeleteIngredientByRecipeIdUseCase
 } from "../../use-cases/delete-ingredient-by-recipe-id/delete-ingredient-by-recipe-id.use-case";
+import {FindStepsByRecipeIdUseCase} from "../../use-cases/find-steps-by-recipe-id/find-steps-by-recipe-id.use-case";
 
 @Controller('recipes')
 export class RecipeController {
@@ -37,6 +38,7 @@ export class RecipeController {
         private readonly addIngredientUseCase: AddIngredientUseCase,
         private readonly findIngredientsByRecipeIdUseCase: FindIngredientsByRecipeIdUseCase,
         private readonly deleteIngredientByRecipeIdUseCase: DeleteIngredientByRecipeIdUseCase,
+        private readonly findStepsByRecipeIdUseCase: FindStepsByRecipeIdUseCase,
     ) {}
 
     @Get()
@@ -52,6 +54,16 @@ export class RecipeController {
     async findIngredientsByRecipeId(@Param('recipeId') recipeId: string) {
         try {
             return await this.findIngredientsByRecipeIdUseCase.execute({ recipeId: RecipeId.from(recipeId) });
+        } catch (error) {
+            console.error(error);
+            throw new BadRequestException(error);
+        }
+    }
+
+    @Get(':recipeId/steps')
+    async findStepsByRecipeId(@Param('recipeId') recipeId: string) {
+        try {
+            return await this.findStepsByRecipeIdUseCase.execute({ recipeId: RecipeId.from(recipeId) });
         } catch (error) {
             console.error(error);
             throw new BadRequestException(error);

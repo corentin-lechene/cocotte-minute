@@ -10,13 +10,15 @@ import {IngredientNotFound} from "../../../../domain/errors/ingredient.error";
 import {IngredientMapper} from "../mappers/ingredient.mapper";
 import {Ingredient} from "../../../../domain/models/ingredient.model";
 import {IngredientId} from "../../../../domain/value-objects/ingredient-id.vo";
+import {Step} from "../../../../domain/models/step.model";
+import {StepMapper} from "../mappers/step.mapper";
 
 @Injectable()
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
 
     private readonly recipes: RecipeEntity[] = [
-        new RecipeEntity('1', 'Recette 1', "https://image.fr/1", []),
-        new RecipeEntity('2', 'Recette 2', "https://image.fr/2", []),
+        new RecipeEntity('1', 'Recette 1', "https://image.fr/1", [], []),
+        new RecipeEntity('2', 'Recette 2', "https://image.fr/2", [], []),
     ];
 
     findAll(): Promise<Recipe[]> {
@@ -50,11 +52,22 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
         });
     }
 
+    findStepsByRecipeId(recipeId: RecipeId): Promise<Step[]> {
+        return new Promise((resolve, reject) => {
+            const recipeEntity = this.recipes.find(recipe => recipe.id === recipeId.getValue());
+            if (recipeEntity) {
+                resolve(recipeEntity.steps.map((step) => StepMapper.toDomain(step)));
+            } else {
+                reject(new RecipeNotFoundError(recipeId.getValue()));
+            }
+        });
+    }
+
     create(recipe: Recipe): Promise<Recipe> {
         return new Promise((resolve) => {
             const persistenceModel = RecipeMapper.toPersistence(recipe);
 
-            const recipeEntity = new RecipeEntity(persistenceModel.id, persistenceModel.name, persistenceModel.picture, []);
+            const recipeEntity = new RecipeEntity(persistenceModel.id, persistenceModel.name, persistenceModel.picture, [], []);
             this.recipes.push(recipeEntity);
             resolve(RecipeMapper.toDomain(recipeEntity));
         });

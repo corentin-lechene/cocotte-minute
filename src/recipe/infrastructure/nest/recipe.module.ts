@@ -6,6 +6,7 @@ import {DeleteRecipeUseCaseModule} from "./delete-recipe-use-case.module";
 import {AddIngredientUseCaseModule} from "./add-ingredient-use-case.module";
 import {FindIngredientsByRecipeIdUseCaseModule} from "./find-ingredients-by-recipe-id-use-case.module";
 import {DeleteIngredientByRecipeIdUseCaseModule} from "./delete-ingredient-by-recipe-id-use-case.module";
+import {FindStepsByRecipeIdUseCaseModule} from "./find-steps-by-recipe-id-use-case.module";
 
 @Module({})
 export class RecipeModule {
@@ -20,6 +21,7 @@ export class RecipeModule {
                 AddIngredientUseCaseModule.use(infrastructureModule),
                 FindIngredientsByRecipeIdUseCaseModule.use(infrastructureModule),
                 DeleteIngredientByRecipeIdUseCaseModule.use(infrastructureModule),
+                FindStepsByRecipeIdUseCaseModule.use(infrastructureModule),
             ],
             controllers: [RecipeController],
             providers: [],
