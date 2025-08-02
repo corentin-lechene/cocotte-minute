@@ -10,7 +10,8 @@ export class RecipeMapper {
             RecipeId.from(entity.id),
             entity.name,
             entity.picture,
-            entity.ingredients.map((ingredientEntity) => IngredientMapper.toDomain(ingredientEntity))
+            entity.ingredients.map((ingredientEntity) => IngredientMapper.toDomain(ingredientEntity)),
+            entity.steps.map((stepEntity) => StepMapper.toDomain(stepEntity)),
         );
     }
 
@@ -20,7 +21,7 @@ export class RecipeMapper {
             recipe.name,
             recipe.picture,
             recipe.ingredients.map((ingredient) => IngredientMapper.toPersistence(ingredient)),
-            recipe.steps.map((step) => StepMapper.toPersistence(step))
+            recipe.steps.map((step) => StepMapper.toPersistence(step)),
         );
     }
 }

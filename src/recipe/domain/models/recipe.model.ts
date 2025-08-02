@@ -39,4 +39,8 @@ export class Recipe {
     addIngredient(ingredient: Ingredient): void {
         this.ingredients.push(ingredient);
     }
+
+    addStep(step: Step): void {
+        this.steps.push(step);
+    }
 }
