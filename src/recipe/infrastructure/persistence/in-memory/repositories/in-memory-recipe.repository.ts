@@ -6,8 +6,10 @@ import {Recipe} from "../../../../domain/models/recipe.model";
 import {RecipeId} from "../../../../domain/value-objects/recipe-id.vo";
 import {RecipeMapper} from "../mappers/recipe.mapper";
 import {RecipeNotFoundError} from "../../../../domain/errors/recipe.error";
+import {IngredientNotFound} from "../../../../domain/errors/ingredient.error";
 import {IngredientMapper} from "../mappers/ingredient.mapper";
 import {Ingredient} from "../../../../domain/models/ingredient.model";
+import {IngredientId} from "../../../../domain/value-objects/ingredient-id.vo";
 
 @Injectable()
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
@@ -79,6 +81,25 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
                 this.recipes.splice(recipeIndex, 1);
             }
             resolve(this.recipes.map(recipeEntity => RecipeMapper.toDomain(recipeEntity)));
+        });
+    }
+
+    deleteIngredientById(ingredientId: IngredientId): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const recipeWithIngredient = this.recipes.find(recipe =>
+                recipe.ingredients.some(ingredient => ingredient.id === ingredientId.getValue())
+            );
+
+            if (!recipeWithIngredient) {
+                reject(new IngredientNotFound(ingredientId.getValue()));
+                return;
+            }
+
+            recipeWithIngredient.ingredients = recipeWithIngredient.ingredients.filter(
+                ingredient => ingredient.id !== ingredientId.getValue()
+            );
+
+            resolve();
         });
     }
 }

@@ -23,6 +23,10 @@ import {AddIngredientUseCase} from "../../use-cases/add-ingredient/add-ingredien
 import {
     FindIngredientsByRecipeIdUseCase
 } from "../../use-cases/find-all-ingredients-by-id/find-ingredients-by-recipe-id-use.case";
+import {IngredientId} from "../../domain/value-objects/ingredient-id.vo";
+import {
+    DeleteIngredientByRecipeIdUseCase
+} from "../../use-cases/delete-ingredient-by-recipe-id/delete-ingredient-by-recipe-id.use-case";
 
 @Controller('recipes')
 export class RecipeController {
@@ -32,6 +36,7 @@ export class RecipeController {
         private readonly deleteRecipeUseCase: DeleteRecipeUseCase,
         private readonly addIngredientUseCase: AddIngredientUseCase,
         private readonly findIngredientsByRecipeIdUseCase: FindIngredientsByRecipeIdUseCase,
+        private readonly deleteIngredientByRecipeIdUseCase: DeleteIngredientByRecipeIdUseCase,
     ) {}
 
     @Get()
@@ -94,6 +99,24 @@ export class RecipeController {
             return await this.deleteRecipeUseCase.execute({ recipeId: RecipeId.from(recipeId) });
         } catch (error) {
             console.error(error)
+            throw new BadRequestException(error);
+        }
+    }
+
+    @Delete(':recipeId/ingredients/:ingredientId')
+    async deleteIngredient(
+        @Param('recipeId') recipeId: string,
+        @Param('ingredientId') ingredientId: string,
+    ): Promise<void> {
+        try {
+            const recipeIdValue = RecipeId.from(recipeId);
+            const ingredientIdValue = IngredientId.from(ingredientId);
+            await this.deleteIngredientByRecipeIdUseCase.execute({
+                recipeId: recipeIdValue,
+                ingredientId: ingredientIdValue
+            });
+        } catch (error) {
+            console.error(error);
             throw new BadRequestException(error);
         }
     }
