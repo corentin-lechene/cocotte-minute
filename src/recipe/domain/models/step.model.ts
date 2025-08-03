@@ -1,20 +1,18 @@
 import {StepId} from "../value-objects/step-id.vo";
-import {StepTip} from "../value-objects/step-tip.vo";
+import {Recipe} from "./recipe.model";
 
 export class Step {
     id: StepId;
-    description: string;
     position: number;
-    title?: string;
-    image?: string;
-    tip?: StepTip;
+    type: "basic" | "composite";
+    description: string;
+    subRecipe?: Recipe;
 
-    constructor(id: StepId, description: string, position: number, title?: string, image?: string, tip?: StepTip) {
+    constructor(id: StepId, position: number, type: "basic" | "composite", description: string, subRecipe?: Recipe) {
         this.id = id;
-        this.description = description;
         this.position = position;
-        this.title = title;
-        this.image = image;
-        this.tip = tip;
+        this.type = type;
+        this.description = description;
+        this.subRecipe = subRecipe;
     }
 }

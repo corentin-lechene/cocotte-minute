@@ -5,7 +5,6 @@ import {IngredientUnit} from "../value-objects/ingredient-unit.vo";
 import {IngredientId} from "../value-objects/ingredient-id.vo";
 import {Step} from "../models/step.model";
 import {StepId} from "../value-objects/step-id.vo";
-import {StepTip} from "../value-objects/step-tip.vo";
 
 export class RecipeFactory {
     create(name: string, picture: string): Recipe {
@@ -18,8 +17,13 @@ export class RecipeFactory {
         return new Ingredient(id, name, unit);
     }
 
-    createStep(description: string, position: number, title?: string, image?: string, tip?: StepTip): Step {
+    createStep(position: number, description: string): Step {
         const id = StepId.generate();
-        return new Step(id, description, position, title, image, tip);
+        return new Step(id, position, "basic", description);
+    }
+
+    createStepSubRecipe(position: number, description: string, subRecipe: Recipe): Step {
+        const id = StepId.generate();
+        return new Step(id, position, "composite", description, subRecipe);
     }
 }

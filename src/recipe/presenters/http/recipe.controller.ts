@@ -28,7 +28,7 @@ import {
     DeleteIngredientByRecipeIdUseCase
 } from "../../use-cases/delete-ingredient-by-recipe-id/delete-ingredient-by-recipe-id.use-case";
 import {FindStepsByRecipeIdUseCase} from "../../use-cases/find-steps-by-recipe-id/find-steps-by-recipe-id.use-case";
-import {AddStepBasicUseCase} from "../../use-cases/add-step-basic/add-step-basic.use-case";
+import {AddStepUseCase} from "../../use-cases/add-step/add-step-use.case";
 import {AddStepBasicResponse} from "./dto/add-step-basic-response.dto";
 import {AddStepBasicRequest} from "./dto/add-step-basic-request.dto";
 import {StepTip} from "../../domain/value-objects/step-tip.vo";
@@ -44,7 +44,7 @@ export class RecipeController {
         private readonly findIngredientsByRecipeIdUseCase: FindIngredientsByRecipeIdUseCase,
         private readonly deleteIngredientByRecipeIdUseCase: DeleteIngredientByRecipeIdUseCase,
         private readonly findStepsByRecipeIdUseCase: FindStepsByRecipeIdUseCase,
-        private readonly addStepBasicUseCase: AddStepBasicUseCase,
+        private readonly addStepBasicUseCase: AddStepUseCase,
     ) {}
 
     @Get()
@@ -120,11 +120,8 @@ export class RecipeController {
             return await this.addStepBasicUseCase.execute({
                 recipeId: RecipeId.from(recipeId),
                 step: {
-                    description: requestDto.description,
                     position: requestDto.position,
-                    title: requestDto.title,
-                    picture: requestDto.picture,
-                    tip: requestDto.tip && requestDto.tip.severity ? StepTip.from(requestDto.tip.text, StepTipSeverity.from(requestDto.tip.severity)) : undefined,
+                    description: requestDto.description,
                 }
             });
         } catch (error) {

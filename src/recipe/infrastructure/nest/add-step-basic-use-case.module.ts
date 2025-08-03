@@ -1,5 +1,5 @@
 import {DynamicModule, Module, Type} from '@nestjs/common';
-import {AddStepBasicUseCase} from "../../use-cases/add-step-basic/add-step-basic.use-case";
+import {AddStepUseCase} from "../../use-cases/add-step/add-step-use.case";
 import {RecipeReadRepository} from "../../domain/repository/recipe-read.repository";
 import {RecipeWriteRepository} from "../../domain/repository/recipe-write.repository";
 import {RecipeFactory} from "../../domain/factories/recipe.factory";
@@ -13,14 +13,14 @@ export class AddStepBasicUseCaseModule {
             providers: [
                 RecipeFactory,
                 {
-                    provide: AddStepBasicUseCase,
+                    provide: AddStepUseCase,
                     useFactory: (recipeReadRepository: RecipeReadRepository, recipeWriteRepository: RecipeWriteRepository, recipeFactory: RecipeFactory) => {
-                        return new AddStepBasicUseCase(recipeReadRepository, recipeWriteRepository, recipeFactory);
+                        return new AddStepUseCase(recipeReadRepository, recipeWriteRepository, recipeFactory);
                     },
                     inject: [RecipeReadRepository, RecipeWriteRepository, RecipeFactory],
                 },
             ],
-            exports: [AddStepBasicUseCase],
+            exports: [AddStepUseCase],
         };
     }
 }

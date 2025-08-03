@@ -15,9 +15,6 @@ export class FindStepsByRecipeIdUseCase implements FindStepsByRecipeIdUseCaseInt
             id: step.id.getValue(),
             description: step.description,
             position: step.position,
-            title: step.title,
-            image: step.image,
-            tip: step.tip?.getObject() ?? null,
         })));
     }
 }
