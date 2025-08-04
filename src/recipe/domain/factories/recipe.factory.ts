@@ -12,6 +12,11 @@ export class RecipeFactory {
         return new Recipe(id, name, picture);
     }
 
+    createBase(name: string, picture: string): Recipe {
+        const id = RecipeId.generate();
+        return new Recipe(id, name, picture, true);
+    }
+
     createIngredient(name: string, unit: IngredientUnit): Ingredient {
         const id = IngredientId.generate();
         return new Ingredient(id, name, unit);

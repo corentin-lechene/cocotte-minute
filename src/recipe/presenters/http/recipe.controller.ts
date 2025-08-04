@@ -87,6 +87,7 @@ export class RecipeController {
             const data: CreateRecipeInput = {
                 name: requestDto.name,
                 picture: requestDto.picture,
+                isBase: requestDto.isBase,
             }
             return await this.createRecipeUseCase.execute(data);
         } catch (error) {

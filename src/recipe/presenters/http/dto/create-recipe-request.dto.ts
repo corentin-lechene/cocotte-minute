@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsString, IsUrl} from 'class-validator';
+import {IsBoolean, IsNotEmpty, IsOptional, IsString, IsUrl} from 'class-validator';
 
 export class CreateRecipeRequest {
     @IsString()
@@ -8,8 +8,13 @@ export class CreateRecipeRequest {
     @IsUrl()
     picture: string;
 
-    constructor(name: string, picture: string) {
+    @IsBoolean()
+    @IsOptional()
+    isBase?: boolean;
+
+    constructor(name: string, picture: string, isBase: boolean) {
         this.name = name;
         this.picture = picture;
+        this.isBase = isBase;
     }
 }

@@ -11,11 +11,13 @@ export class CreateRecipeUseCase implements CreateRecipeUseCaseInterface {
     ) {}
 
     async execute(createRecipeRequest: CreateRecipeInput): Promise<CreateRecipeOutput> {
-        const {name, picture} = createRecipeRequest;
-        const recipe = this.recipeFactory.create(name, picture);
+        const {name, picture, isBase} = createRecipeRequest;
+        const recipe = isBase
+            ? this.recipeFactory.createBase(name, picture)
+            : this.recipeFactory.create(name, picture);
 
         const recipeSaved = await this.recipeWriteRepository.create(recipe);
 
-        return new CreateRecipeOutput(recipeSaved.id.getValue(), recipeSaved.name, recipeSaved.picture)
+        return new CreateRecipeOutput(recipeSaved.id.getValue(), recipeSaved.name, recipeSaved.picture, recipeSaved.isBase);
     }
 }
