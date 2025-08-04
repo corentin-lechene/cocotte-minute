@@ -12,20 +12,44 @@ import {Ingredient} from "../../../../domain/models/ingredient.model";
 import {IngredientId} from "../../../../domain/value-objects/ingredient-id.vo";
 import {Step} from "../../../../domain/models/step.model";
 import {StepMapper} from "../mappers/step.mapper";
+import {StepEntity} from "../entities/step.entity";
 
 @Injectable()
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
 
     private readonly recipes: RecipeEntity[] = [
-        new RecipeEntity('1', 'Recette 1', "https://image.fr/1", [], []),
-        new RecipeEntity('2', 'Recette 2', "https://image.fr/2", [], []),
+        new RecipeEntity('1', 'Recette 1', "https://image.fr/1", false, [], []),
+        new RecipeEntity('2', 'Recette 2', "https://image.fr/2", false, [], []),
+        new RecipeEntity(
+            '3',
+            'Recette de base',
+            "https://image.fr/3",
+            true,
+            [],
+            [
+                new StepEntity('1', 1, 'basic', 'Préparer les ingrédients'),
+                new StepEntity('2', 2, 'basic', 'Mélanger les ingrédients'),
+                new StepEntity('3', 3, 'basic', 'Cuire à feu moyen'),
+                new StepEntity('4', 4, 'basic', 'Laisser refroidir'),
+                new StepEntity('5', 5, 'basic', 'Servir chaud'),
+            ]
+        ),
     ];
 
     findAll(): Promise<Recipe[]> {
         return new Promise((resolve) => {
             const recipes = this.recipes.map(recipeEntity => {
-                return new Recipe(RecipeId.from(recipeEntity.id), recipeEntity.name, recipeEntity.picture);
+                return new Recipe(RecipeId.from(recipeEntity.id), recipeEntity.name, recipeEntity.picture, recipeEntity.isBase);
             });
+            resolve(recipes);
+        });
+    }
+
+    findAllByBase(): Promise<Recipe[]> {
+        return new Promise((resolve) => {
+            const recipes = this.recipes
+                .filter(recipeEntity => recipeEntity.isBase)
+                .map(recipeEntity => RecipeMapper.toDomain(recipeEntity));
             resolve(recipes);
         });
     }
@@ -67,7 +91,7 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
         return new Promise((resolve) => {
             const persistenceModel = RecipeMapper.toPersistence(recipe);
 
-            const recipeEntity = new RecipeEntity(persistenceModel.id, persistenceModel.name, persistenceModel.picture, [], []);
+            const recipeEntity = new RecipeEntity(persistenceModel.id, persistenceModel.name, persistenceModel.picture, persistenceModel.isBase, [], []);
             this.recipes.push(recipeEntity);
             resolve(RecipeMapper.toDomain(recipeEntity));
         });

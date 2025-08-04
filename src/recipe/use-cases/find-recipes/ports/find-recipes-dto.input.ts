@@ -1,3 +1,5 @@
 export class FindRecipesInput {
-    constructor() {}
+    constructor(
+        public readonly isRecipeBase?: boolean,
+    ) {}
 }

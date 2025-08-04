@@ -5,6 +5,7 @@ import {Step} from "../models/step.model";
 
 export abstract class RecipeReadRepository {
     abstract findAll(): Promise<Recipe[]>;
+    abstract findAllByBase(): Promise<Recipe[]>;
 
     /**
      * @throws {RecipeNotFoundError} if the recipe is not found

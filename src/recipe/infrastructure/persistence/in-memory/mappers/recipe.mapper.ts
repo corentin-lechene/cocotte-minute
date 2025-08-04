@@ -10,6 +10,7 @@ export class RecipeMapper {
             RecipeId.from(entity.id),
             entity.name,
             entity.picture,
+            entity.isBase,
             entity.ingredients.map((ingredientEntity) => IngredientMapper.toDomain(ingredientEntity)),
             entity.steps.map((stepEntity) => StepMapper.toDomain(stepEntity)),
         );
@@ -20,6 +21,7 @@ export class RecipeMapper {
             recipe.id.getValue(),
             recipe.name,
             recipe.picture,
+            recipe.isBase,
             recipe.ingredients.map((ingredient) => IngredientMapper.toPersistence(ingredient)),
             recipe.steps.map((step) => StepMapper.toPersistence(step)),
         );

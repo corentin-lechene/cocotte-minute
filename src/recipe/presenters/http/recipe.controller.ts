@@ -3,7 +3,7 @@ import {
     Body,
     Controller, Delete,
     Get, Param,
-    Post,
+    Post, Query,
     UsePipes,
     ValidationPipe
 } from '@nestjs/common';
@@ -50,9 +50,11 @@ export class RecipeController {
     ) {}
 
     @Get()
-    async findRecipes() {
+    async findRecipes(@Query('base') isRecipeBase?: string): Promise<any> {
         try {
-            return await this.findRecipeUseCase.execute({});
+            return await this.findRecipeUseCase.execute({
+                isRecipeBase: isRecipeBase === 'true' ? true : isRecipeBase === 'false' ? false : undefined,
+            });
         } catch (error) {
             throw new BadRequestException(error);
         }

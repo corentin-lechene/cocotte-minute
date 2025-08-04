@@ -9,31 +9,22 @@ export class Recipe {
     picture: string;
     ingredients: Ingredient[];
     steps: Step[];
-    // isBase: boolean;
-    // cookingTime?: RecipeDuration;
-    // setupTime?: RecipeDuration;
-    // restTime?: RecipeDuration;
+    isBase: boolean;
 
     constructor(
         id: RecipeId,
         name: string,
         picture: string,
+        isBase: boolean = false,
         ingredients: Ingredient[] = [],
         steps: Step[] = [],
-        // isBase: boolean,
-        // cookingTime?: RecipeDuration,
-        // setupTime?: RecipeDuration,
-        // restTime?: RecipeDuration,
     ) {
         this.id = id;
         this.name = name;
         this.picture = picture;
+        this.isBase = isBase;
         this.ingredients = ingredients;
         this.steps = steps;
-        // this.cookingTime = cookingTime;
-        // this.setupTime = setupTime;
-        // this.restTime = restTime;
-        // this.isBase = isBase;
     }
 
     addIngredient(ingredient: Ingredient): void {
