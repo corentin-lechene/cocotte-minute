@@ -1,6 +1,7 @@
 import {Step} from "../../../../domain/models/step.model";
 import {StepEntity} from "../entities/step.entity";
 import {StepId} from "../../../../domain/value-objects/step-id.vo";
+import {RecipeMapper} from "./recipe.mapper";
 
 export class StepMapper {
     static toDomain(entity: StepEntity): Step {
@@ -9,6 +10,7 @@ export class StepMapper {
             entity.position,
             entity.type as "basic" | "composite",
             entity.description,
+            entity.subRecipe ? RecipeMapper.toDomain(entity.subRecipe) : undefined
         )
     }
 
@@ -18,6 +20,7 @@ export class StepMapper {
             step.position,
             step.type,
             step.description,
+            step.subRecipe ? RecipeMapper.toPersistence(step.subRecipe) : undefined
         );
     }
 }

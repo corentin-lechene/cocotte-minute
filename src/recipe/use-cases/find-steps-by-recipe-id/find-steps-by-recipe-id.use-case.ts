@@ -13,8 +13,19 @@ export class FindStepsByRecipeIdUseCase implements FindStepsByRecipeIdUseCaseInt
         const steps = await this.recipeReadRepository.findStepsByRecipeId(recipeId);
         return new FindStepsByRecipeIdOutput(steps.map((step) => ({
             id: step.id.getValue(),
-            description: step.description,
             position: step.position,
+            type: step.type,
+            description: step.description,
+            subRecipe: step.subRecipe ? {
+                id: step.subRecipe.id.getValue(),
+                name: step.subRecipe.name,
+                steps: step.subRecipe.steps.map((subStep) => ({
+                    id: subStep.id.getValue(),
+                    position: subStep.position,
+                    type: subStep.type,
+                    description: subStep.description,
+                })),
+            } : undefined,
         })));
     }
 }

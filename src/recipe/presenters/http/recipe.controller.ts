@@ -31,8 +31,9 @@ import {FindStepsByRecipeIdUseCase} from "../../use-cases/find-steps-by-recipe-i
 import {AddStepUseCase} from "../../use-cases/add-step/add-step-use.case";
 import {AddStepBasicResponse} from "./dto/add-step-basic-response.dto";
 import {AddStepBasicRequest} from "./dto/add-step-basic-request.dto";
-import {StepTip} from "../../domain/value-objects/step-tip.vo";
-import {StepTipSeverity} from "../../domain/value-objects/step-tip-severity.vo";
+import {AddStepCompositeUseCase} from "../../use-cases/add-step-composite/add-step-composite.use-case";
+import {AddStepCompositeRequest} from "./dto/add-step-composite-request.dto";
+import {AddStepCompositeResponse} from "./dto/add-step-composite-response.dto";
 
 @Controller('recipes')
 export class RecipeController {
@@ -45,6 +46,7 @@ export class RecipeController {
         private readonly deleteIngredientByRecipeIdUseCase: DeleteIngredientByRecipeIdUseCase,
         private readonly findStepsByRecipeIdUseCase: FindStepsByRecipeIdUseCase,
         private readonly addStepBasicUseCase: AddStepUseCase,
+        private readonly addStepCompositeUseCase: AddStepCompositeUseCase,
     ) {}
 
     @Get()
@@ -122,6 +124,26 @@ export class RecipeController {
                 step: {
                     position: requestDto.position,
                     description: requestDto.description,
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            throw new BadRequestException(error);
+        }
+    }
+
+    @Post(':recipeId/steps/composite')
+    async addStepComposite(
+        @Param('recipeId') recipeId: string,
+        @Body() requestDto: AddStepCompositeRequest,
+    ): Promise<AddStepCompositeResponse> {
+        try {
+            return await this.addStepCompositeUseCase.execute({
+                recipeId: RecipeId.from(recipeId),
+                step: {
+                    position: requestDto.position,
+                    description: requestDto.description,
+                    subRecipeId: RecipeId.from(requestDto.subRecipeId),
                 }
             });
         } catch (error) {
