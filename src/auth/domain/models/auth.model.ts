@@ -5,10 +5,12 @@ export class UserAuth {
     id: AuthId;
     code: AuthCode;
     expiredAt?: Date;
+    token?: string;
 
-    constructor(id: AuthId, code: AuthCode, expiredAt?: Date) {
+    constructor(id: AuthId, code: AuthCode, expiredAt?: Date, token?: string) {
         this.id = id;
         this.code = code;
         this.expiredAt = expiredAt;
+        this.token = token;
     }
 }

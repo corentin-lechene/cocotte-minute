@@ -3,5 +3,6 @@ import {AuthCode} from "../value-object/auth-code.vo";
 
 export abstract class AuthRepository {
     abstract findUserByCode(code: AuthCode): Promise<UserAuth>;
-    abstract setUserCodeToExpired(userAuth: UserAuth): Promise<void>;
+    abstract findUserByToken(token: string): Promise<UserAuth>;
+    abstract saveUser(user: UserAuth): Promise<UserAuth>;
 }

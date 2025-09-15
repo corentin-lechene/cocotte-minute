@@ -9,6 +9,7 @@ export class AuthMapper {
             AuthId.from(entity.id),
             AuthCode.from(entity.code),
             entity.expiredAt,
+            entity.token,
         )
     }
 
@@ -17,6 +18,7 @@ export class AuthMapper {
             userAuth.id.getValue(),
             userAuth.code.getValue(),
             userAuth.expiredAt,
+            userAuth.token,
         );
     }
 }

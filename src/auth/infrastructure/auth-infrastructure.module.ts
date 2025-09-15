@@ -1,6 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import {InMemoryPersistenceModule} from "./persistence/in-memory/in-memory-persistence.module";
 import {AppDriverType} from "../../common/interfaces/application-bootstrap-options.interface";
+import {JwtModule} from "./jwt/jwt.module";
 
 @Module({})
 export class AuthInfrastructureModule {
@@ -9,8 +10,8 @@ export class AuthInfrastructureModule {
 
         return {
             module: AuthInfrastructureModule,
-            imports: [persistenceModule],
-            exports: [persistenceModule],
+            imports: [persistenceModule, JwtModule],
+            exports: [persistenceModule, JwtModule],
         };
     }
 }

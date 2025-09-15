@@ -1,6 +1,7 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
 import { AuthController } from '../../presenters/http/auth.controller';
 import {LoginUseCaseModule} from "./login-use-case.module";
+import {GetProfileUseCaseModule} from "./get-profile-use-case.module";
 
 @Module({})
 export class AuthModule {
@@ -10,6 +11,7 @@ export class AuthModule {
             imports: [
                 infrastructureModule,
                 LoginUseCaseModule.use(infrastructureModule),
+                GetProfileUseCaseModule.use(infrastructureModule),
             ],
             controllers: [AuthController],
             providers: [],

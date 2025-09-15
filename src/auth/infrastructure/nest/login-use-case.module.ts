@@ -1,6 +1,7 @@
 import {DynamicModule, Module, Type} from '@nestjs/common';
 import {LoginUseCase} from "../../use-cases/login/login.use-case";
 import {AuthRepository} from "../../domain/repository/auth.repository";
+import {TokenService} from "../../domain/services/token.service";
 
 @Module({})
 export class LoginUseCaseModule {
@@ -11,10 +12,10 @@ export class LoginUseCaseModule {
             providers: [
                 {
                     provide: LoginUseCase,
-                    useFactory: (authRepository: AuthRepository) => {
-                        return new LoginUseCase(authRepository);
+                    useFactory: (authRepository: AuthRepository, tokenService: TokenService) => {
+                        return new LoginUseCase(authRepository, tokenService);
                     },
-                    inject: [AuthRepository],
+                    inject: [AuthRepository, TokenService],
                 },
             ],
             exports: [LoginUseCase],

@@ -1,6 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 
+//todo move this
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
     private readonly apiKey = process.env.API_KEY;
