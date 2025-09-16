@@ -1,9 +1,12 @@
 import {LoginUseCase} from "../../use-cases/login/login.use-case";
 import {AuthCode} from "../../domain/value-object/auth-code.vo";
-import {BadRequestException, Body, Controller, Get, Post, Headers, HttpCode} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Post, Headers, HttpCode, UseGuards} from "@nestjs/common";
 import {LoginRequest} from "./dto/login-request.dto";
 import {LoginResponse} from "./dto/login-response.dto";
 import {GetProfileUseCase} from "../../use-cases/get-profile/get-profile.use-case";
+import {ExecutionContextUserDecorator} from "../../infrastructure/nest/decorators/execution-context-user.decorator";
+import {ExecutionContextUser} from "../../../common/interfaces/execution-context-user.interface";
+import {ExecutionContextUserGuard} from "../../infrastructure/nest/guards/execution-context-user.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -13,11 +16,10 @@ export class AuthController {
     ) {}
 
     @Get('me')
-    //todo add auth guard
-    async getProfile(@Headers('Authorization') bearer?: string) {
+    @UseGuards(ExecutionContextUserGuard)
+    async getProfile(@ExecutionContextUserDecorator() executionContextUser: ExecutionContextUser): Promise<any> {
         try {
-            const token = (bearer ?? '').split(' ')[1];
-            const response = await this.getProfileUseCase.execute({ token });
+            const response = await this.getProfileUseCase.execute({ token: executionContextUser.actor.token });
             return {
                 id: response.userAuth.id.getValue(),
                 token: response.userAuth.token,

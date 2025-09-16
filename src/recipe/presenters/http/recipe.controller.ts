@@ -2,8 +2,8 @@ import {
     BadRequestException,
     Body,
     Controller, Delete,
-    Get, Param,
-    Post, Query,
+    Get, Headers, Param,
+    Post, Query, UseGuards,
     UsePipes,
     ValidationPipe
 } from '@nestjs/common';
@@ -34,6 +34,11 @@ import {AddStepBasicRequest} from "./dto/add-step-basic-request.dto";
 import {AddStepCompositeUseCase} from "../../use-cases/add-step-composite/add-step-composite.use-case";
 import {AddStepCompositeRequest} from "./dto/add-step-composite-request.dto";
 import {AddStepCompositeResponse} from "./dto/add-step-composite-response.dto";
+import {
+    ExecutionContextUserDecorator
+} from "../../../auth/infrastructure/nest/decorators/execution-context-user.decorator";
+import {ExecutionContextUser} from "../../../common/interfaces/execution-context-user.interface";
+import {ExecutionContextUserGuard} from "../../../auth/infrastructure/nest/guards/execution-context-user.guard";
 
 @Controller('recipes')
 export class RecipeController {
@@ -82,14 +87,18 @@ export class RecipeController {
 
     @Post()
     @UsePipes(new ValidationPipe({ transform: true }))
-    async createRecipe(@Body() requestDto: CreateRecipeRequest): Promise<CreateRecipeResponse> {
+    @UseGuards(ExecutionContextUserGuard)
+    async createRecipe(
+        @Body() requestDto: CreateRecipeRequest,
+        @ExecutionContextUserDecorator() executionContextUser: ExecutionContextUser
+    ): Promise<CreateRecipeResponse> {
         try {
             const data: CreateRecipeInput = {
                 name: requestDto.name,
                 picture: requestDto.picture,
                 isBase: requestDto.isBase,
             }
-            return await this.createRecipeUseCase.execute(data);
+            return await this.createRecipeUseCase.execute(data, executionContextUser);
         } catch (error) {
             console.error(error)
             throw new BadRequestException(error);

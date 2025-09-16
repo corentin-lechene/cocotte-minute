@@ -2,6 +2,7 @@ import { DynamicModule, Module, Type } from '@nestjs/common';
 import { AuthController } from '../../presenters/http/auth.controller';
 import {LoginUseCaseModule} from "./login-use-case.module";
 import {GetProfileUseCaseModule} from "./get-profile-use-case.module";
+import {ExecutionContextUserGuard} from "./guards/execution-context-user.guard";
 
 @Module({})
 export class AuthModule {
@@ -14,8 +15,10 @@ export class AuthModule {
                 GetProfileUseCaseModule.use(infrastructureModule),
             ],
             controllers: [AuthController],
-            providers: [],
-            exports: [infrastructureModule],
+            providers: [
+                ExecutionContextUserGuard
+            ],
+            exports: [infrastructureModule, ExecutionContextUserGuard],
         };
     }
 }

@@ -5,16 +5,17 @@ import {IngredientUnit} from "../value-objects/ingredient-unit.vo";
 import {IngredientId} from "../value-objects/ingredient-id.vo";
 import {Step} from "../models/step.model";
 import {StepId} from "../value-objects/step-id.vo";
+import {Creator} from "../models/creator.model";
 
 export class RecipeFactory {
-    create(name: string, picture: string): Recipe {
+    create(name: string, picture: string, creator: Creator): Recipe {
         const id = RecipeId.generate();
-        return new Recipe(id, name, picture);
+        return new Recipe(id, name, picture, creator);
     }
 
-    createBase(name: string, picture: string): Recipe {
+    createBase(name: string, picture: string, creator: Creator): Recipe {
         const id = RecipeId.generate();
-        return new Recipe(id, name, picture, true);
+        return new Recipe(id, name, picture, creator);
     }
 
     createIngredient(name: string, unit: IngredientUnit): Ingredient {

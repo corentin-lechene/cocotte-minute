@@ -3,6 +3,9 @@ import {RecipeWriteRepository} from "../../domain/repository/recipe-write.reposi
 import {RecipeFactory} from "../../domain/factories/recipe.factory";
 import {CreateRecipeInput} from "./ports/create-recipe-dto.input";
 import {CreateRecipeOutput} from "./ports/create-recipe-dto.output";
+import {ExecutionContextUser} from "../../../common/interfaces/execution-context-user.interface";
+import {Creator} from "../../domain/models/creator.model";
+import {CreatorId} from "../../domain/value-objects/creator-id.vo";
 
 export class CreateRecipeUseCase implements CreateRecipeUseCaseInterface {
     constructor(
@@ -10,11 +13,14 @@ export class CreateRecipeUseCase implements CreateRecipeUseCaseInterface {
         private readonly recipeFactory: RecipeFactory,
     ) {}
 
-    async execute(createRecipeRequest: CreateRecipeInput): Promise<CreateRecipeOutput> {
+    async execute(createRecipeRequest: CreateRecipeInput, executionContextUser: ExecutionContextUser): Promise<CreateRecipeOutput> {
         const {name, picture, isBase} = createRecipeRequest;
+        const {actor} = executionContextUser;
+
+        const creator = new Creator(CreatorId.from(actor.id), actor.firstName, actor.lastName);
         const recipe = isBase
-            ? this.recipeFactory.createBase(name, picture)
-            : this.recipeFactory.create(name, picture);
+            ? this.recipeFactory.createBase(name, picture, creator)
+            : this.recipeFactory.create(name, picture, creator);
 
         const recipeSaved = await this.recipeWriteRepository.create(recipe);
 

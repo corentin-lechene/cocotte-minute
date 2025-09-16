@@ -13,17 +13,20 @@ import {IngredientId} from "../../../../domain/value-objects/ingredient-id.vo";
 import {Step} from "../../../../domain/models/step.model";
 import {StepMapper} from "../mappers/step.mapper";
 import {StepEntity} from "../entities/step.entity";
+import {CreatorEntity} from "../entities/creator.entity";
+import {CreatorMapper} from "../mappers/creator.mapper";
 
 @Injectable()
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
 
     private readonly recipes: RecipeEntity[] = [
-        new RecipeEntity('1', 'Recette 1', "https://image.fr/1", false, [], []),
-        new RecipeEntity('2', 'Recette 2', "https://image.fr/2", false, [], []),
+        new RecipeEntity('1', 'Recette 1', "https://image.fr/1", new CreatorEntity('1', 'John', 'Doe'), false, [], []),
+        new RecipeEntity('2', 'Recette 2', "https://image.fr/2", new CreatorEntity('2', 'Jane', 'Smith'), false, [], []),
         new RecipeEntity(
             '3',
             'Recette de base',
             "https://image.fr/3",
+            new CreatorEntity('3', 'Alice', 'Brown'),
             true,
             [],
             [
@@ -38,9 +41,7 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
 
     findAll(): Promise<Recipe[]> {
         return new Promise((resolve) => {
-            const recipes = this.recipes.map(recipeEntity => {
-                return new Recipe(RecipeId.from(recipeEntity.id), recipeEntity.name, recipeEntity.picture, recipeEntity.isBase);
-            });
+            const recipes = this.recipes.map(recipeEntity => RecipeMapper.toDomain(recipeEntity));
             resolve(recipes);
         });
     }
@@ -91,7 +92,15 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
         return new Promise((resolve) => {
             const persistenceModel = RecipeMapper.toPersistence(recipe);
 
-            const recipeEntity = new RecipeEntity(persistenceModel.id, persistenceModel.name, persistenceModel.picture, persistenceModel.isBase, [], []);
+            const recipeEntity = new RecipeEntity(
+                persistenceModel.id,
+                persistenceModel.name,
+                persistenceModel.picture,
+                CreatorMapper.toPersistence(recipe.creator),
+                persistenceModel.isBase,
+                [],
+                []
+            );
             this.recipes.push(recipeEntity);
             resolve(RecipeMapper.toDomain(recipeEntity));
         });

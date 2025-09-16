@@ -9,6 +9,8 @@ import {DeleteIngredientByRecipeIdUseCaseModule} from "./delete-ingredient-by-re
 import {FindStepsByRecipeIdUseCaseModule} from "./find-steps-by-recipe-id-use-case.module";
 import {AddStepBasicUseCaseModule} from "./add-step-basic-use-case.module";
 import {AddStepCompositeUseCaseModule} from "./add-step-composite-use-case.module";
+import {AuthModule} from "../../../auth/infrastructure/nest/auth.module";
+import {AuthInfrastructureModule} from "../../../auth/infrastructure/auth-infrastructure.module";
 
 @Module({})
 export class RecipeModule {
@@ -17,6 +19,7 @@ export class RecipeModule {
             module: RecipeModule,
             imports: [
                 infrastructureModule,
+                AuthModule.withInfrastructure(AuthInfrastructureModule.use('in-memory')), //todo: remove this
                 FindRecipesUseCaseModule.use(infrastructureModule),
                 CreateRecipeUseCaseModule.use(infrastructureModule),
                 DeleteRecipeUseCaseModule.use(infrastructureModule),
