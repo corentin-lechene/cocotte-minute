@@ -2,10 +2,11 @@ import { Recipe } from "../models/recipe.model";
 import { RecipeId } from "../value-objects/recipe-id.vo";
 import {Ingredient} from "../models/ingredient.model";
 import {Step} from "../models/step.model";
+import {Creator} from "../models/creator.model";
 
 export abstract class RecipeReadRepository {
-    abstract findAll(): Promise<Recipe[]>;
-    abstract findAllByBase(): Promise<Recipe[]>;
+    abstract findAll(creator: Creator): Promise<Recipe[]>;
+    abstract findAllByBase(creator: Creator): Promise<Recipe[]>;
 
     /**
      * @throws {RecipeNotFoundError} if the recipe is not found

@@ -15,6 +15,7 @@ import {StepMapper} from "../mappers/step.mapper";
 import {StepEntity} from "../entities/step.entity";
 import {CreatorEntity} from "../entities/creator.entity";
 import {CreatorMapper} from "../mappers/creator.mapper";
+import {Creator} from "../../../../domain/models/creator.model";
 
 @Injectable()
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
@@ -39,16 +40,20 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
         ),
     ];
 
-    findAll(): Promise<Recipe[]> {
+    findAll(creator: Creator): Promise<Recipe[]> {
         return new Promise((resolve) => {
-            const recipes = this.recipes.map(recipeEntity => RecipeMapper.toDomain(recipeEntity));
+            const recipes = this.recipes
+                .filter(recipeEntity => recipeEntity.creator.id === creator.id.getValue())
+                .filter(recipeEntity => !recipeEntity.isBase)
+                .map(recipeEntity => RecipeMapper.toDomain(recipeEntity));
             resolve(recipes);
         });
     }
 
-    findAllByBase(): Promise<Recipe[]> {
+    findAllByBase(creator: Creator): Promise<Recipe[]> {
         return new Promise((resolve) => {
             const recipes = this.recipes
+                .filter(recipeEntity => recipeEntity.creator.id === creator.id.getValue())
                 .filter(recipeEntity => recipeEntity.isBase)
                 .map(recipeEntity => RecipeMapper.toDomain(recipeEntity));
             resolve(recipes);

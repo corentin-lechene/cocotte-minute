@@ -1,6 +1,6 @@
 import {LoginUseCase} from "../../use-cases/login/login.use-case";
 import {AuthCode} from "../../domain/value-object/auth-code.vo";
-import {BadRequestException, Body, Controller, Get, Post, Headers, HttpCode, UseGuards} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Post, HttpCode, UseGuards} from "@nestjs/common";
 import {LoginRequest} from "./dto/login-request.dto";
 import {LoginResponse} from "./dto/login-response.dto";
 import {GetProfileUseCase} from "../../use-cases/get-profile/get-profile.use-case";

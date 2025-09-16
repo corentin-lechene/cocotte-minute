@@ -2,7 +2,7 @@ import {
     BadRequestException,
     Body,
     Controller, Delete,
-    Get, Headers, Param,
+    Get, Param,
     Post, Query, UseGuards,
     UsePipes,
     ValidationPipe
@@ -55,11 +55,15 @@ export class RecipeController {
     ) {}
 
     @Get()
-    async findRecipes(@Query('base') isRecipeBase?: string): Promise<any> {
+    @UseGuards(ExecutionContextUserGuard)
+    async findRecipes(
+        @ExecutionContextUserDecorator() executionContextUser: ExecutionContextUser,
+        @Query('base') isRecipeBase?: string,
+    ): Promise<any> {
         try {
             return await this.findRecipeUseCase.execute({
                 isRecipeBase: isRecipeBase === 'true' ? true : isRecipeBase === 'false' ? false : undefined,
-            });
+            }, executionContextUser);
         } catch (error) {
             throw new BadRequestException(error);
         }
