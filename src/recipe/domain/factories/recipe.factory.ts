@@ -15,7 +15,7 @@ export class RecipeFactory {
 
     createBase(name: string, picture: string, creator: Creator): Recipe {
         const id = RecipeId.generate();
-        return new Recipe(id, name, picture, creator);
+        return new Recipe(id, name, picture, creator, true);
     }
 
     createIngredient(name: string, unit: IngredientUnit): Ingredient {

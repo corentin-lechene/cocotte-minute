@@ -17,7 +17,7 @@ export class AddStepUseCase implements AddStepUseCaseInterface {
     const { recipeId, step: stepInput } = addStepBasicInput;
 
     const recipe = await this.recipeReadRepository.findById(recipeId);
-    const stepBasic = this.recipeFactory.createStep(stepInput.position, stepInput.description);
+    const stepBasic = this.recipeFactory.createStep(recipe.steps.length + 1, stepInput.description);
     recipe.addStep(stepBasic);
     const savedRecipe = await this.recipeWriteRepository.save(recipe);
     const addedStep = savedRecipe.steps.findLast((findStep) => findStep.id.equals(stepBasic.id));

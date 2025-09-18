@@ -22,6 +22,7 @@ export class ExecutionContextUserGuard implements CanActivate {
         }
 
         const token = authHeader.replace('Bearer ', '').trim();
+        console.log(token);
         const user = await this.authRepository.findUserByToken(token);
 
         if (!user) {

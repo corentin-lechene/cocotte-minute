@@ -19,7 +19,8 @@ export class AddStepCompositeUseCase implements AddStepCompositeUseCaseInterface
 
         const recipe = await this.recipeReadRepository.findById(recipeId);
         const subRecipe = await this.recipeReadRepository.findById(step.subRecipeId);
-        const stepComposite = this.recipeFactory.createStepSubRecipe(step.position, step.description, subRecipe);
+        const position = recipe.steps.length + 1; //todo handle position from input if needed
+        const stepComposite = this.recipeFactory.createStepSubRecipe(position, step.description, subRecipe);
         recipe.addStep(stepComposite);
         const savedRecipe = await this.recipeWriteRepository.save(recipe);
         const addedStep = savedRecipe.steps.findLast((findStep) => findStep.id.equals(stepComposite.id));

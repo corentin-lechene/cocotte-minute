@@ -21,12 +21,12 @@ import {Creator} from "../../../../domain/models/creator.model";
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
 
     private readonly recipes: RecipeEntity[] = [
-        new RecipeEntity('1', 'Recette 1', "https://image.fr/1", new CreatorEntity('1', 'John', 'Doe'), false, [], []),
-        new RecipeEntity('2', 'Recette 2', "https://image.fr/2", new CreatorEntity('2', 'Jane', 'Smith'), false, [], []),
+        new RecipeEntity('1', 'Recette 1', "https://picsum.photos/536/354", new CreatorEntity('1', 'John', 'Doe'), false, [], []),
+        new RecipeEntity('2', 'Recette 2', "https://picsum.photos/536/354", new CreatorEntity('2', 'Jane', 'Smith'), false, [], []),
         new RecipeEntity(
             '3',
             'Recette de base',
-            "https://image.fr/3",
+            "https://picsum.photos/536/354",
             new CreatorEntity('3', 'Alice', 'Brown'),
             true,
             [],
@@ -44,7 +44,6 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
         return new Promise((resolve) => {
             const recipes = this.recipes
                 .filter(recipeEntity => recipeEntity.creator.id === creator.id.getValue())
-                .filter(recipeEntity => !recipeEntity.isBase)
                 .map(recipeEntity => RecipeMapper.toDomain(recipeEntity));
             resolve(recipes);
         });
@@ -86,6 +85,23 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
         return new Promise((resolve, reject) => {
             const recipeEntity = this.recipes.find(recipe => recipe.id === recipeId.getValue());
             if (recipeEntity) {
+                const allRecipeIds = recipeEntity.steps.map((step) => {
+                    if(step.type === 'composite' && step.subRecipe) {
+                        return step.subRecipe.id;
+                    }
+                    return null;
+                }).filter((step) => step !== null).flat();
+
+                const allRecipes = this.recipes.filter(recipe => allRecipeIds.includes(recipe.id));
+                recipeEntity.steps.forEach((step) => {
+                    if(step.type === 'composite' && step.subRecipe) {
+                        const subRecipe = allRecipes.find(recipe => recipe.id === step.subRecipe?.id);
+                        if(subRecipe) {
+                            step.subRecipe = subRecipe;
+                        }
+                    }
+                })
+
                 resolve(recipeEntity.steps.map((step) => StepMapper.toDomain(step)));
             } else {
                 reject(new RecipeNotFoundError(recipeId.getValue()));
