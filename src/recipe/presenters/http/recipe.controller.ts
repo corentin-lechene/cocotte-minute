@@ -39,6 +39,8 @@ import {
 } from "../../../auth/infrastructure/nest/decorators/execution-context-user.decorator";
 import {ExecutionContextUser} from "../../../common/interfaces/execution-context-user.interface";
 import {ExecutionContextUserGuard} from "../../../auth/infrastructure/nest/guards/execution-context-user.guard";
+import {StepId} from "../../domain/value-objects/step-id.vo";
+import {DeleteStepByRecipeIdUseCase} from "../../use-cases/delete-step-by-recipe-id/delete-step-by-recipe-id.use-case";
 
 @Controller('recipes')
 export class RecipeController {
@@ -49,6 +51,7 @@ export class RecipeController {
         private readonly addIngredientUseCase: AddIngredientUseCase,
         private readonly findIngredientsByRecipeIdUseCase: FindIngredientsByRecipeIdUseCase,
         private readonly deleteIngredientByRecipeIdUseCase: DeleteIngredientByRecipeIdUseCase,
+        private readonly deleteStepByRecipeIdUseCase: DeleteStepByRecipeIdUseCase,
         private readonly findStepsByRecipeIdUseCase: FindStepsByRecipeIdUseCase,
         private readonly addStepBasicUseCase: AddStepUseCase,
         private readonly addStepCompositeUseCase: AddStepCompositeUseCase,
@@ -190,6 +193,24 @@ export class RecipeController {
                 recipeId: recipeIdValue,
                 ingredientId: ingredientIdValue
             });
+        } catch (error) {
+            console.error(error);
+            throw new BadRequestException(error);
+        }
+    }
+
+    @Delete(':recipeId/steps/:stepId')
+    async deleteStep(
+        @Param('recipeId') recipeId: string,
+        @Param('stepId') stepId: string,
+    ): Promise<void> {
+        try {
+            const recipeIdValue = RecipeId.from(recipeId);
+            const stepIdValue = StepId.from(stepId);
+            await this.deleteStepByRecipeIdUseCase.execute({
+                recipeId: recipeIdValue,
+                stepId: stepIdValue
+            })
         } catch (error) {
             console.error(error);
             throw new BadRequestException(error);

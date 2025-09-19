@@ -16,6 +16,7 @@ import {StepEntity} from "../entities/step.entity";
 import {CreatorEntity} from "../entities/creator.entity";
 import {CreatorMapper} from "../mappers/creator.mapper";
 import {Creator} from "../../../../domain/models/creator.model";
+import {StepId} from "../../../../domain/value-objects/step-id.vo";
 
 @Injectable()
 export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeReadRepository {
@@ -164,6 +165,25 @@ export class InMemoryRecipeRepository implements RecipeWriteRepository, RecipeRe
 
             recipeWithIngredient.ingredients = recipeWithIngredient.ingredients.filter(
                 ingredient => ingredient.id !== ingredientId.getValue()
+            );
+
+            resolve();
+        });
+    }
+
+    deleteStepById(stepId: StepId): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const recipeWithStep = this.recipes.find(recipe =>
+                recipe.steps.some(step => step.id === stepId.getValue())
+            );
+
+            if (!recipeWithStep) {
+                reject(new IngredientNotFound(stepId.getValue()));
+                return;
+            }
+
+            recipeWithStep.steps = recipeWithStep.steps.filter(
+                step => step.id !== stepId.getValue()
             );
 
             resolve();

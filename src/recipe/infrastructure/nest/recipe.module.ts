@@ -11,6 +11,7 @@ import {AddStepBasicUseCaseModule} from "./add-step-basic-use-case.module";
 import {AddStepCompositeUseCaseModule} from "./add-step-composite-use-case.module";
 import {AuthModule} from "../../../auth/infrastructure/nest/auth.module";
 import {AuthInfrastructureModule} from "../../../auth/infrastructure/auth-infrastructure.module";
+import {DeleteStepByRecipeIdUseCaseModule} from "./delete-step-by-recipe-id-use-case.module";
 
 @Module({})
 export class RecipeModule {
@@ -29,6 +30,7 @@ export class RecipeModule {
                 FindStepsByRecipeIdUseCaseModule.use(infrastructureModule),
                 AddStepBasicUseCaseModule.use(infrastructureModule),
                 AddStepCompositeUseCaseModule.use(infrastructureModule),
+                DeleteStepByRecipeIdUseCaseModule.use(infrastructureModule),
             ],
             controllers: [RecipeController],
             providers: [],
