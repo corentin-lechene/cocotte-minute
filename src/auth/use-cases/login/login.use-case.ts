@@ -21,7 +21,7 @@ export class LoginUseCase implements LoginUseCaseInterface {
 
     const token = await this.tokenService.generate(userAuth.id);
     userAuth.token = token
-    userAuth.expiredAt = new Date();
+    // userAuth.expiredAt = new Date();
 
     await this.authRepository.saveUser(userAuth);
 

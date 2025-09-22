@@ -20,7 +20,7 @@ export class RecipeModule {
             module: RecipeModule,
             imports: [
                 infrastructureModule,
-                AuthModule.withInfrastructure(AuthInfrastructureModule.use('in-memory')), //todo: remove this
+                AuthModule.withInfrastructure(AuthInfrastructureModule.use('orm')), //todo: remove this
                 FindRecipesUseCaseModule.use(infrastructureModule),
                 CreateRecipeUseCaseModule.use(infrastructureModule),
                 DeleteRecipeUseCaseModule.use(infrastructureModule),

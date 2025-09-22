@@ -3,7 +3,7 @@ export class IngredientUnitType {
 
     private constructor(value: string) {
         if (!value || !['g', 'ml', 'piece'].includes(value)) {
-            throw new Error('Invalid IngredientUnitType value');
+            throw new Error(`Invalid IngredientUnitType value (${value})`);
         }
         this.value = value;
     }

@@ -19,17 +19,13 @@ export class AddStepUseCase implements AddStepUseCaseInterface {
     const recipe = await this.recipeReadRepository.findById(recipeId);
     const stepBasic = this.recipeFactory.createStep(recipe.steps.length + 1, stepInput.description);
     recipe.addStep(stepBasic);
-    const savedRecipe = await this.recipeWriteRepository.save(recipe);
-    const addedStep = savedRecipe.steps.findLast((findStep) => findStep.id.equals(stepBasic.id));
-    if (!addedStep) {
-      throw new StepNotFoundError(stepBasic.id.getValue());
-    }
+    await this.recipeWriteRepository.save(recipe);
 
     return new AddStepBasicOutput(
-        addedStep.id.getValue(),
-        addedStep.position,
-        addedStep.type,
-        addedStep.description,
+        stepBasic.id.getValue(),
+        stepBasic.position,
+        stepBasic.type,
+        stepBasic.description,
     );
   }
 }

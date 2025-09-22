@@ -23,8 +23,8 @@ export class IngredientUnit {
         return this.unit;
     }
 
-    public static from(value: number, unit: IngredientUnitType): IngredientUnit {
-        return new IngredientUnit(value, unit);
+    public static from(value: string | number, unit: IngredientUnitType): IngredientUnit {
+        return new IngredientUnit(typeof value === 'string' ? parseInt(value) : value, unit);
     }
 
     equals(other: IngredientUnit): boolean {

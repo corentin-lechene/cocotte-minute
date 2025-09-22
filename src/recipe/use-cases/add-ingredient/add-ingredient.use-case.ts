@@ -19,17 +19,13 @@ export class AddIngredientUseCase implements AddIngredientUseCaseInterface {
     const recipe = await this.recipeReadRepository.findById(recipeId);
     const ingredient = this.recipeFactory.createIngredient(ingredientDto.name, ingredientDto.unit);
     recipe.addIngredient(ingredient);
-    const saveRecipe = await this.recipeWriteRepository.save(recipe);
-    const addedIngredient = saveRecipe.ingredients.findLast((findIngredient) => findIngredient.id.equals(ingredient.id));
-    if(!addedIngredient) {
-      throw new RecipeIngredientNotFoundError(ingredient.id.getValue());
-    }
 
+    await this.recipeWriteRepository.save(recipe);
     return new AddIngredientOutput(
-        addedIngredient.id.getValue(),
-        addedIngredient.name,
-        addedIngredient.unit.getValue(),
-        addedIngredient.unit.getUnit().getValue()
+        ingredient.id.getValue(),
+        ingredient.name,
+        ingredient.unit.getValue(),
+        ingredient.unit.getUnit().getValue()
     );
   }
 }
