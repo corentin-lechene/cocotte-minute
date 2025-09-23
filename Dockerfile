@@ -1,37 +1,32 @@
-# Étape 1 : build de l'application
-FROM --platform=linux/arm/v7 node:18-alpine AS builder
+# Étape 1 : Build
+FROM node:20-alpine AS builder
 
-# Création du dossier de travail
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Installation des dépendances
+# Installer les dépendances
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install
 
-# Copier le reste du code
+# Copier le reste du projet et build
 COPY . .
-
-# Compiler TypeScript
 RUN npm run build
 
-# Étape 2 : image finale légère
-FROM --platform=linux/arm/v7 node:18-alpine
+# Étape 2 : Exécution
+FROM node:20-alpine AS runner
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copier uniquement les fichiers buildés et package.json
-COPY package*.json ./
-COPY --from=builder /usr/src/app/dist ./dist
+# Copier uniquement le nécessaire
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
 
-# Installer uniquement les dépendances prod
-RUN npm ci --only=production
-
-# Définir les variables d'environnement par défaut
+# Variables
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Exposer le port utilisé par NestJS
+# Exposer le port
 EXPOSE 3000
 
-# Commande pour lancer l'app
+# Lancer l'application
 CMD ["node", "dist/main.js"]
