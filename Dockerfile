@@ -29,4 +29,4 @@ ENV PORT=3000
 EXPOSE 3000
 
 # Lancer l'application
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
